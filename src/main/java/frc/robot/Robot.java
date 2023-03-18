@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */

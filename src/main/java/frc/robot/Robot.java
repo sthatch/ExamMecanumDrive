@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
@@ -29,20 +30,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Talon frontLeftFront = new Talon(kFrontLeftFrontChannel);
-    Talon frontLeftRear = new Talon(kFrontLeftRearChannel);
+    WPI_TalonSRX frontLeftFront = new WPI_TalonSRX(kFrontLeftFrontChannel);
+    WPI_TalonSRX frontLeftRear = new WPI_TalonSRX(kFrontLeftRearChannel);
     MotorControllerGroup frontLeft = new MotorControllerGroup(frontLeftFront,frontLeftRear);
 
-    Talon rearLeftFront = new Talon(kRearLeftFrontChannel);
-    Talon rearLeftRear = new Talon(kRearLeftRearChannel);
+    WPI_TalonSRX rearLeftFront = new WPI_TalonSRX(kRearLeftFrontChannel);
+    WPI_TalonSRX rearLeftRear = new WPI_TalonSRX(kRearLeftRearChannel);
     MotorControllerGroup rearLeft = new MotorControllerGroup(rearLeftFront, rearLeftRear);
 
-    Talon frontRightFront = new Talon(kFrontRightFrontChannel);
-    Talon frontRightRear = new Talon(kFrontRightRearChannel);
+    WPI_TalonSRX frontRightFront = new WPI_TalonSRX(kFrontRightFrontChannel);
+    WPI_TalonSRX frontRightRear = new WPI_TalonSRX(kFrontRightRearChannel);
     MotorControllerGroup frontRight = new MotorControllerGroup(frontRightFront, frontRightRear);
 
-    Talon rearRightFront = new Talon(kRearRightFrontChannel);
-    Talon rearRightRear = new Talon(kRearRightRearChannel);
+    WPI_TalonSRX rearRightFront = new WPI_TalonSRX(kRearRightFrontChannel);
+    WPI_TalonSRX rearRightRear = new WPI_TalonSRX(kRearRightRearChannel);
     MotorControllerGroup rearRight = new MotorControllerGroup(rearRightFront, rearRightRear);
 
     // Invert the right side motors.

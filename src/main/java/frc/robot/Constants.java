@@ -18,14 +18,14 @@ public final class Constants {
     }
 
     public static class MotorConstants {
-        public static final int kFrontLeftFrontChannel = 4;
-        public static final int kRearLeftFrontChannel = 6;
-        public static final int kFrontRightFrontChannel = 0;
-        public static final int kRearRightFrontChannel = 2;
+        public static final int kRightFrontChannel = 0;
+        public static final int kRightFrontFollowerChannel = 2;
+        public static final int kRightRearChannel = 1;
+        public static final int kRightRearFollowerChannel = 3;
       
-        public static final int kFrontLeftRearChannel = 5;
-        public static final int kRearLeftRearChannel = 7;
-        public static final int kFrontRightRearChannel = 1;
-        public static final int kRearRightRearChannel = 3;
+        public static final int kLeftFrontChannel = 4;
+        public static final int kLeftFrontFollowerChannel = 6;
+        public static final int kLeftRearChannel = 5;
+        public static final int kLeftRearFollowerChannel = 7;
     }
 }

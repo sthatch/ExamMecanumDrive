@@ -7,7 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
@@ -27,30 +28,43 @@ public class Robot extends TimedRobot {
   private MecanumDrive m_robotDrive;
   private XboxController m_stick;
 
+  WPI_TalonSRX leftFront;
+  WPI_TalonSRX leftFrontFollower;
+  WPI_TalonSRX leftRear;
+  WPI_TalonSRX leftRearFollower;
+  WPI_TalonSRX rightFront;
+  WPI_TalonSRX rightFrontFollower;
+  WPI_TalonSRX rightRear;
+  WPI_TalonSRX rightRearFollower;
+
   @Override
   public void robotInit() {
-    WPI_TalonSRX frontLeftFront = new WPI_TalonSRX(kFrontLeftFrontChannel);
-    WPI_TalonSRX frontLeftRear = new WPI_TalonSRX(kFrontLeftRearChannel);
-    MotorControllerGroup frontLeft = new MotorControllerGroup(frontLeftFront,frontLeftRear);
+    leftFront = new WPI_TalonSRX(kFrontLeftFrontChannel);
+    leftFrontFollower = new WPI_TalonSRX(kFrontLeftRearChannel);
+    leftFrontFollower.follow(leftFront);
+    leftFrontFollower.setInverted(InvertType.FollowMaster);
+    
+    leftRear = new WPI_TalonSRX(kRearLeftFrontChannel);
+    leftRearFollower = new WPI_TalonSRX(kRearLeftRearChannel);
+    leftRearFollower.follow(leftRear);
+    leftRearFollower.setInverted(InvertType.FollowMaster);
 
-    WPI_TalonSRX rearLeftFront = new WPI_TalonSRX(kRearLeftFrontChannel);
-    WPI_TalonSRX rearLeftRear = new WPI_TalonSRX(kRearLeftRearChannel);
-    MotorControllerGroup rearLeft = new MotorControllerGroup(rearLeftFront, rearLeftRear);
+    rightFront = new WPI_TalonSRX(kFrontRightFrontChannel);
+    rightFrontFollower = new WPI_TalonSRX(kFrontRightRearChannel);
+    rightFrontFollower.follow(rightFront);
+    rightFrontFollower.setInverted(InvertType.FollowMaster);
 
-    WPI_TalonSRX frontRightFront = new WPI_TalonSRX(kFrontRightFrontChannel);
-    WPI_TalonSRX frontRightRear = new WPI_TalonSRX(kFrontRightRearChannel);
-    MotorControllerGroup frontRight = new MotorControllerGroup(frontRightFront, frontRightRear);
-
-    WPI_TalonSRX rearRightFront = new WPI_TalonSRX(kRearRightFrontChannel);
-    WPI_TalonSRX rearRightRear = new WPI_TalonSRX(kRearRightRearChannel);
-    MotorControllerGroup rearRight = new MotorControllerGroup(rearRightFront, rearRightRear);
+    rightRear = new WPI_TalonSRX(kRearRightFrontChannel);
+    rightRearFollower = new WPI_TalonSRX(kRearRightRearChannel);    
+    rightRearFollower.follow(rightRear);
+    rightRearFollower.setInverted(InvertType.FollowMaster);
 
     // Invert the right side motors.
     // You may need to change or remove this to match your robot.
-    frontRight.setInverted(true);
-    rearRight.setInverted(true);
+    rightFront.setInverted(true);
+    rightRear.setInverted(true);
 
-    m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
+    m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
     m_stick = new XboxController(kJoystickChannel);
   }

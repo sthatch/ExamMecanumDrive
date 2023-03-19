@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.MotorConstants;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -13,49 +15,37 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
-  private static final int kFrontLeftFrontChannel = 4;
-  private static final int kRearLeftFrontChannel = 6;
-  private static final int kFrontRightFrontChannel = 0;
-  private static final int kRearRightFrontChannel = 2;
-
-  private static final int kFrontLeftRearChannel = 5;
-  private static final int kRearLeftRearChannel = 7;
-  private static final int kFrontRightRearChannel = 1;
-  private static final int kRearRightRearChannel = 3;
-
-  private static final int kJoystickChannel = 0;
-
   private MecanumDrive m_robotDrive;
   private XboxController m_stick;
 
-  WPI_TalonSRX leftFront;
-  WPI_TalonSRX leftFrontFollower;
-  WPI_TalonSRX leftRear;
-  WPI_TalonSRX leftRearFollower;
-  WPI_TalonSRX rightFront;
-  WPI_TalonSRX rightFrontFollower;
-  WPI_TalonSRX rightRear;
-  WPI_TalonSRX rightRearFollower;
+  private WPI_TalonSRX leftFront;
+  private WPI_TalonSRX leftFrontFollower;
+  private WPI_TalonSRX leftRear;
+  private WPI_TalonSRX leftRearFollower;
+  private WPI_TalonSRX rightFront;
+  private WPI_TalonSRX rightFrontFollower;
+  private WPI_TalonSRX rightRear;
+  private WPI_TalonSRX rightRearFollower;
 
   @Override
   public void robotInit() {
-    leftFront = new WPI_TalonSRX(kFrontLeftFrontChannel);
-    leftFrontFollower = new WPI_TalonSRX(kFrontLeftRearChannel);
+    leftFront = new WPI_TalonSRX(MotorConstants.kFrontLeftFrontChannel);
+    leftFrontFollower = new WPI_TalonSRX(MotorConstants.kFrontLeftRearChannel);
     leftFrontFollower.follow(leftFront);
     leftFrontFollower.setInverted(InvertType.FollowMaster);
     
-    leftRear = new WPI_TalonSRX(kRearLeftFrontChannel);
-    leftRearFollower = new WPI_TalonSRX(kRearLeftRearChannel);
+    leftRear = new WPI_TalonSRX(MotorConstants.kRearLeftFrontChannel);
+    leftRearFollower = new WPI_TalonSRX(MotorConstants.kRearLeftRearChannel);
     leftRearFollower.follow(leftRear);
     leftRearFollower.setInverted(InvertType.FollowMaster);
 
-    rightFront = new WPI_TalonSRX(kFrontRightFrontChannel);
-    rightFrontFollower = new WPI_TalonSRX(kFrontRightRearChannel);
+    rightFront = new WPI_TalonSRX(MotorConstants.kFrontRightFrontChannel);
+    rightFrontFollower = new WPI_TalonSRX(MotorConstants.kFrontRightRearChannel);
     rightFrontFollower.follow(rightFront);
     rightFrontFollower.setInverted(InvertType.FollowMaster);
 
-    rightRear = new WPI_TalonSRX(kRearRightFrontChannel);
-    rightRearFollower = new WPI_TalonSRX(kRearRightRearChannel);    
+    rightRear = new WPI_TalonSRX(MotorConstants.kRearRightFrontChannel);
+    rightRearFollower = new WPI_TalonSRX(MotorConstants.kRearRightRearChannel);    
     rightRearFollower.follow(rightRear);
     rightRearFollower.setInverted(InvertType.FollowMaster);
 
@@ -66,7 +56,7 @@ public class Robot extends TimedRobot {
 
     m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
-    m_stick = new XboxController(kJoystickChannel);
+    m_stick = new XboxController(OperatorConstants.kDriverControllerPort);
   }
 
   @Override

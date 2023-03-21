@@ -4,55 +4,60 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.MotorConstants;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
-  private static final int kFrontLeftFrontChannel = 4;
-  private static final int kRearLeftFrontChannel = 6;
-  private static final int kFrontRightFrontChannel = 0;
-  private static final int kRearRightFrontChannel = 2;
-
-  private static final int kFrontLeftRearChannel = 5;
-  private static final int kRearLeftRearChannel = 7;
-  private static final int kFrontRightRearChannel = 1;
-  private static final int kRearRightRearChannel = 3;
-
-  private static final int kJoystickChannel = 0;
-
   private MecanumDrive m_robotDrive;
   private XboxController m_stick;
 
+  private WPI_TalonSRX leftFront;
+  private WPI_TalonSRX leftFrontFollower;
+  private WPI_TalonSRX leftRear;
+  private WPI_TalonSRX leftRearFollower;
+  private WPI_TalonSRX rightFront;
+  private WPI_TalonSRX rightFrontFollower;
+  private WPI_TalonSRX rightRear;
+  private WPI_TalonSRX rightRearFollower;
+
   @Override
   public void robotInit() {
-    WPI_TalonSRX frontLeftFront = new WPI_TalonSRX(kFrontLeftFrontChannel);
-    WPI_TalonSRX frontLeftRear = new WPI_TalonSRX(kFrontLeftRearChannel);
-    MotorControllerGroup frontLeft = new MotorControllerGroup(frontLeftFront,frontLeftRear);
+    leftFront = new WPI_TalonSRX(MotorConstants.kLeftFrontChannel);
+    leftFrontFollower = new WPI_TalonSRX(MotorConstants.kLeftRearChannel);
+    leftFrontFollower.follow(leftFront);
+    leftFrontFollower.setInverted(InvertType.FollowMaster);
+    
+    leftRear = new WPI_TalonSRX(MotorConstants.kLeftFrontFollowerChannel);
+    leftRearFollower = new WPI_TalonSRX(MotorConstants.kLeftRearFollowerChannel);
+    leftRearFollower.follow(leftRear);
+    leftRearFollower.setInverted(InvertType.FollowMaster);
 
-    WPI_TalonSRX rearLeftFront = new WPI_TalonSRX(kRearLeftFrontChannel);
-    WPI_TalonSRX rearLeftRear = new WPI_TalonSRX(kRearLeftRearChannel);
-    MotorControllerGroup rearLeft = new MotorControllerGroup(rearLeftFront, rearLeftRear);
+    rightFront = new WPI_TalonSRX(MotorConstants.kRightFrontChannel);
+    rightFrontFollower = new WPI_TalonSRX(MotorConstants.kRightRearChannel);
+    rightFrontFollower.follow(rightFront);
+    rightFrontFollower.setInverted(InvertType.FollowMaster);
 
-    WPI_TalonSRX frontRightFront = new WPI_TalonSRX(kFrontRightFrontChannel);
-    WPI_TalonSRX frontRightRear = new WPI_TalonSRX(kFrontRightRearChannel);
-    MotorControllerGroup frontRight = new MotorControllerGroup(frontRightFront, frontRightRear);
-
-    WPI_TalonSRX rearRightFront = new WPI_TalonSRX(kRearRightFrontChannel);
-    WPI_TalonSRX rearRightRear = new WPI_TalonSRX(kRearRightRearChannel);
-    MotorControllerGroup rearRight = new MotorControllerGroup(rearRightFront, rearRightRear);
+    rightRear = new WPI_TalonSRX(MotorConstants.kRightFrontFollowerChannel);
+    rightRearFollower = new WPI_TalonSRX(MotorConstants.kRightRearFollowerChannel);    
+    rightRearFollower.follow(rightRear);
+    rightRearFollower.setInverted(InvertType.FollowMaster);
 
     // Invert the right side motors.
     // You may need to change or remove this to match your robot.
-    frontRight.setInverted(true);
-    rearRight.setInverted(true);
+    rightFront.setInverted(true);
+    rightRear.setInverted(true);
 
-    m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
+    m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
-    m_stick = new XboxController(kJoystickChannel);
+    m_stick = new XboxController(OperatorConstants.kDriverControllerPort);
   }
 
   @Override

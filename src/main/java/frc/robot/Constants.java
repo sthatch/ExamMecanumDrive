@@ -23,9 +23,9 @@ public final class Constants {
         public static final int kRightRearChannel = 2;
         public static final int kRightRearFollowerChannel = 3;
       
-        public static final int kLeftFrontChannel = 4;
-        public static final int kLeftFrontFollowerChannel = 6;
-        public static final int kLeftRearChannel = 5;
+        public static final int kLeftFrontChannel = 5;
+        public static final int kLeftFrontFollowerChannel = 4;
+        public static final int kLeftRearChannel = 6;
         public static final int kLeftRearFollowerChannel = 7;
     }
 

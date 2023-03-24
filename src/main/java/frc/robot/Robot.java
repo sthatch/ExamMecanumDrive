@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.MotorConstants;
+import frc.robot.Constants.Drivetrain;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,6 +28,9 @@ public class Robot extends TimedRobot {
   private WPI_TalonSRX rightFrontFollower;
   private WPI_TalonSRX rightRear;
   private WPI_TalonSRX rightRearFollower;
+
+  private double velocityX;
+  private double velocityY;
 
   @Override
   public void robotInit() {
@@ -58,12 +62,46 @@ public class Robot extends TimedRobot {
     m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
     m_stick = new XboxController(OperatorConstants.kDriverControllerPort);
+
+    velocityX = 0.0;
+    velocityY = 0.0;
+
   }
 
   @Override
   public void teleopPeriodic() {
+
+    velocityX = calculateVelocity(velocityX, m_stick.getLeftX());
+    velocityY = calculateVelocity(velocityY, m_stick.getLeftY());
+    
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
-    m_robotDrive.driveCartesian(-m_stick.getLeftY(), -m_stick.getLeftX(), -m_stick.getRightX());
+    m_robotDrive.driveCartesian(-velocityX, -velocityY, -m_stick.getRightX());
+  }
+
+  double calculateVelocity(double velocity, double target){
+    double result = target;
+
+    if(velocity != target){
+      if(velocity < target){
+        //Robot is accelerating
+        result += Drivetrain.kMaxAcceleration;
+
+        //Prevent the new acceleration from exceeding the targt acceleration
+        if(result > target){
+          result = target;
+        }
+      }else{
+        //Robot is decelerating
+        result -= Drivetrain.kMaxAcceleration;
+
+        //Prevent the new deceleration from exceeding the targt deceleration
+        if(result < target){
+          result = target;
+        }
+      }  
+    }
+    
+    return result;
   }
 }

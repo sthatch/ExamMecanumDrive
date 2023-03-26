@@ -30,6 +30,6 @@ public final class Constants {
     }
 
     public static class Drivetrain {
-        public static final double kMaxAcceleration = 0.2;
+        public static final double kMaxAcceleration = 0.08;
     }
 }

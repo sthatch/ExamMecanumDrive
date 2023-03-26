@@ -7,10 +7,12 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.MotorConstants;
 import frc.robot.Constants.Drivetrain;
-
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -31,6 +33,11 @@ public class Robot extends TimedRobot {
 
   private double velocityX;
   private double velocityY;
+
+  private ShuffleboardTab DrivetrainTab = Shuffleboard.getTab("Drivetrain");
+  private GenericEntry velocityXEntry = DrivetrainTab.add("velocityX", 0).getEntry();
+  private GenericEntry velocityYEntry = DrivetrainTab.add("velocityY", 0).getEntry();
+  private GenericEntry velocityZEntry = DrivetrainTab.add("velocityZ", 0).getEntry();
 
   @Override
   public void robotInit() {
@@ -56,8 +63,8 @@ public class Robot extends TimedRobot {
 
     // Invert the right side motors.
     // You may need to change or remove this to match your robot.
-    rightFront.setInverted(true);
-    rightRear.setInverted(true);
+    leftFront.setInverted(true);
+    leftRear.setInverted(true);
 
     m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
@@ -69,14 +76,18 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {
+  public void teleopPeriodic() {    
+    velocityX = calculateVelocity(velocityX, m_stick.getLeftY());
+    velocityXEntry.getDouble(velocityX);
 
-    velocityX = calculateVelocity(velocityX, m_stick.getLeftX());
-    velocityY = calculateVelocity(velocityY, m_stick.getLeftY());
+    velocityY = calculateVelocity(velocityY, m_stick.getLeftX());
+    velocityYEntry.getDouble(velocityY);
     
+    velocityZEntry.getDouble(m_stick.getRightX());
+
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
-    m_robotDrive.driveCartesian(-velocityX, -velocityY, -m_stick.getRightX());
+    m_robotDrive.driveCartesian(-velocityX, -velocityY, m_stick.getRightX());
   }
 
   double calculateVelocity(double velocity, double target){
@@ -85,7 +96,7 @@ public class Robot extends TimedRobot {
     if(velocity != target){
       if(velocity < target){
         //Robot is accelerating
-        result += Drivetrain.kMaxAcceleration;
+        result = velocity + Drivetrain.kMaxAcceleration;
 
         //Prevent the new acceleration from exceeding the targt acceleration
         if(result > target){
@@ -93,7 +104,7 @@ public class Robot extends TimedRobot {
         }
       }else{
         //Robot is decelerating
-        result -= Drivetrain.kMaxAcceleration;
+        result = velocity - Drivetrain.kMaxAcceleration;
 
         //Prevent the new deceleration from exceeding the targt deceleration
         if(result < target){

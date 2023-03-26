@@ -63,8 +63,8 @@ public class Robot extends TimedRobot {
 
     // Invert the right side motors.
     // You may need to change or remove this to match your robot.
-    leftFront.setInverted(true);
-    leftRear.setInverted(true);
+    rightFront.setInverted(true);
+    rightRear.setInverted(true);
 
     m_robotDrive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
